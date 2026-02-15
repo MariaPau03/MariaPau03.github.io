@@ -1,8 +1,19 @@
-/* 1. Reset & Global Styles */
+/* 1. Global Styles & Variables */
+:root {
+    --bg-color: #0d0d0d;
+    --sidebar-bg: #050505; 
+    --card-bg: #161616;
+    --accent-color: #9d4edd;
+    --accent-glow: rgba(157, 78, 221, 0.3);
+    --text-main: #ffffff;
+    --text-dim: #a0a0a0;
+    --sidebar-width: 280px;
+}
+
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* Essential for predictable spacing */
+    box-sizing: border-box;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
@@ -11,165 +22,302 @@ html {
     scroll-behavior: smooth;
 }
 
-:root {
-    --bg-color: #0d0d0d;
-    --card-bg: #161616;
-    --accent-color: #9d4edd;
-    --accent-glow: rgba(157, 78, 221, 0.3);
-    --text-main: #ffffff;
-    --text-dim: #a0a0a0;
-    --nav-height: 80px;
-}
-
-/* 2. Body Setup */
 body {
     background-color: var(--bg-color);
     color: var(--text-main);
     font-family: 'Inter', sans-serif;
     line-height: 1.7;
-    overflow-x: hidden; /* Prevents accidental horizontal scrolling */
+    display: flex; /* Creates sidebar side-by-side layout */
 }
 
-/* 3. Typography Refinement */
-h1, h2, h3 {
-    line-height: 1.2;
+/* 2. Sidebar Styling */
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    background: var(--sidebar-bg);
+    position: fixed;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    text-align: center;
+    padding: 20px 10px;
+}
+
+/* Fix the size of the sidebar photo */
+.nav-avatar, .logo-circle {
+    width: 200px;  /* Fixed size so it's not "enormous" */
+    height: 200px; 
+    margin: 0 auto 15px; /* Center it */
+    border-radius: 50%; /* Perfect circle */
+    object-fit: cover;
+    border: 3px solid var(--accent-color);
+}
+
+.logo-circle {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--accent-color), #5a189a);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin: 0 auto 15px;
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.nav-menu ul {
+    list-style: none;
+    margin-top: 20px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.nav-menu a:hover {
+    background: rgba(157, 78, 221, 0.1);
+    color: var(--accent-color);
+}
+
+/* 3. Main Content Area */
+.content-area {
+    margin-left: var(--sidebar-width); /* Prevents content from being under sidebar */
+    flex: 1;
+    padding: 60px 8%;
+}
+
+/* 4. The Two-Column About Layout */
+.about-container {
+    display: flex;
+    gap: 50px;
+    align-items: flex-start; /* Keeps text at the top */
+}
+
+/* LEFT SIDE: Big Photo */
+.about-image-side {
+    flex: 0 0 450px; /* Forces specific width for the left column */
+}
+
+.profile-photo-big-left {
+    width: 100%;
+    height: 600px;
+    object-fit: cover;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+/* RIGHT SIDE: Text Content */
+.about-text-side {
+    flex: 1;
 }
 
 h1 {
-    font-size: clamp(2.5rem, 5vw, 4rem); /* Responsive font size */
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
     font-weight: 700;
     background: linear-gradient(to right, #fff, var(--accent-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 
-h2 {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
+
+/* Update the slideshow/middle image container */
+/* 1. Slideshow Container (The "Window") */
+.slideshow-container {
+    max-width: 400px; /* Controls the overall size of the slideshow */
+    margin: 30px auto; /* Centers the slideshow horizontally */
+    border-radius: 16px;
+    overflow: hidden; /* Hides images that are not currently active */
+    position: relative;
+    background-color: transparent; 
 }
 
-/* 4. Layout Components */
-main {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 20px;
+/* 2. The Sliding Track */
+.slideshow-wrapper {
+    display: flex; /* Lines images up side-by-side */
+    transition: transform 1s cubic-bezier(0.45, 0, 0.55, 1); /* Smooth movement effect */
+    width: 100%;
 }
 
-.section {
-    padding: 100px 0; /* More breathing room */
+.mySlides {
+    flex: 0 0 100%; /* Each slide matches the container width */
+    position: relative;
 }
 
-/* 5. Navbar (Sticky & Glassmorphism) */
-.navbar {
-    height: var(--nav-height);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 10%;
-    background: rgba(13, 13, 13, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+.mySlides img {
+    width: 100%;
+    height: auto;
+    max-height: 350px; /* Prevents images from becoming too tall */
+    object-fit: contain; /* Shows the entire image without cutting it */
+    display: block;
 }
 
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 30px;
+/* 3. Captions */
+.text {
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 10px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 0.85rem;
 }
 
-.nav-links a {
-    color: var(--text-main);
-    font-weight: 500;
-    font-size: 0.95rem;
-    opacity: 0.8;
+
+.fade {
+    animation: fadeEffect 30s;
 }
 
-.nav-links a:hover {
-    opacity: 1;
-    color: var(--accent-color);
-    border: none; /* Removes the bottom border from general 'a' tags */
+@keyframes fadeEffect {
+    from {opacity: .4} 
+    to {opacity: 1}
 }
 
-/* 6. About Section & Profile */
-.about-container {
-    display: flex;
-    align-items: flex-start;
-    gap: 50px;
-    flex-wrap: wrap;
-}
-
-.profile-photo {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 24px; /* Modern "squircle" instead of a perfect circle */
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px var(--accent-glow);
-}
-
-.about-text {
-    flex: 1;
-    min-width: 300px;
-}
-
-/* 7. Cards & Projects */
-.card, .project-card {
+/* 6. Cards & Skills (From your original) */
+.card, .skill-card, .project-card {
     background: var(--card-bg);
     padding: 30px;
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-top: 20px;
 }
 
-.project-card:hover {
-    transform: translateY(-8px);
-    border-color: var(--accent-color);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-}
-
-/* 8. Dark Mode Class (For your JS toggle) */
-body.light-theme {
-    --bg-color: #f5f5f5;
-    --card-bg: #ffffff;
-    --text-main: #1a1a1a;
-    --text-dim: #444444;
-}
-/* Update this in your style.css */
 .tags {
     display: flex;
-    flex-wrap: wrap; /* Allows tags to move to the next line if they are too long */
-    gap: 12px;       /* This creates the 'comma' space visually without text */
-    margin-top: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
 }
 
 .tags span {
-    background: rgba(157, 78, 221, 0.15); /* Subtle purple tint */
-    border: 1px solid rgba(157, 78, 221, 0.4);
-    color: #fff;
-    padding: 6px 14px;
-    border-radius: 20px; /* Makes them pill-shaped */
+    background: rgba(157, 78, 221, 0.1);
+    border: 1px solid rgba(157, 78, 221, 0.3);
+    color: var(--accent-color);
+    padding: 5px 12px;
+    border-radius: 20px;
     font-size: 0.85rem;
-    white-space: nowrap; /* Prevents a single tag from breaking in half */
 }
 
-/* Update your section styling */
-.section {
-    padding: 100px 0; /* This adds a large gap (100px) above and below each section */
-    border-top: 1px solid rgba(255, 255, 255, 0.05); /* Very subtle line to separate topics */
+/* Responsive Logic */
+@media (max-width: 1100px) {
+    body { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; position: relative; }
+    .content-area { margin-left: 0; padding: 40px 20px; }
+    .about-container { flex-direction: column; align-items: center; }
+    .about-image-side { width: 100%; max-width: 450px; }
 }
 
-/* Remove the border for the very first section (About) so it doesn't hit the nav */
-#about {
-    border-top: none;
-    padding-top: 60px; 
+/* Roadmap Container */
+.roadmap-container {
+    position: relative;
+    padding-left: 30px; /* Space for the vertical line */
+    margin-top: 20px;
 }
 
-/* Add extra space specifically between your bio card and the skills grid */
-.skills-grid {
-    margin-top: 60px; 
+/* The Vertical Line (The Spine) */
+.roadmap-container::before {
+    content: '';
+    position: absolute;
+    left: 7px; /* Centers the line under the dots */
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent-color), rgba(157, 78, 221, 0.1));
+}
+
+/* Individual Roadmap Item */
+.roadmap-item {
+    position: relative;
+    margin-bottom: 30px;
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.roadmap-item:hover {
+    transform: translateX(10px); /* Subtle slide effect on hover */
+    border-color: var(--accent-color);
+}
+
+/* The Dots */
+.roadmap-dot {
+    position: absolute;
+    left: -30px; /* Aligns with the vertical line */
+    top: 25px;
+    width: 16px;
+    height: 16px;
+    background: var(--bg-color);
+    border: 3px solid var(--accent-color);
+    border-radius: 50%;
+    z-index: 2;
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* Date Styling */
+.roadmap-item .date {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    margin-bottom: 5px;
+}
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.contact-card {
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none; /* For the LinkedIn link */
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-color);
+    box-shadow: 0 10px 20px var(--accent-glow);
+}
+
+.contact-card .icon-circle {
+    margin: 0 auto 15px;
+    background: rgba(157, 78, 221, 0.1);
+    color: var(--accent-color);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.5rem;
+}
+
+.copy-hint {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: var(--accent-color);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.link-card {
+    display: block; /* Makes the whole card clickable for LinkedIn */
 }
